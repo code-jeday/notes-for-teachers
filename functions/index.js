@@ -106,7 +106,7 @@ app.post('/signup',(req,res) =>{
         email: req.body.email,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
-        handel: req.body.handel,
+        handle: req.body.handle,
     };
     // validation check
     let errors ={};
@@ -119,12 +119,13 @@ app.post('/signup',(req,res) =>{
 
     if(isEmpty(newUser.password)) errors.password = 'Must not be empty';
     if(newUser.confirmPassword !== newUser.password) errors.confirmPassword = 'Passwords must match';
-    if(isEmpty(newUser.handel)) errors.handel = 'Must not be empty';
+    if(isEmpty(newUser.handle)) errors.handle = 'Must not be empty';
 
     if(Object.keys(errors).length >0) return res.status(400).json(errors);
 
     let token, userId;
-    db.doc('/users/'+newUser.handel).get()
+    db.doc('/users/'+newUser.handle)
+        .get()
         .then(doc => {
             if (doc.exists) {
                 return res.status(400).json({handle: 'this handle is already taken'});
@@ -141,12 +142,12 @@ app.post('/signup',(req,res) =>{
         .then((idToken) =>{
             token = idToken;
             const userCredential ={
-                handle: newUser.handel,
+                handle: newUser.handle,
                 email: newUser.email,
                 createdAt: new Date().toISOString(),
                 userId: userId
             };
-            return db.doc('/users/'+newUser.handel).set(userCredential);
+            return db.doc('/users/'+newUser.handle).set(userCredential);
         })
         .then(()=>{
             return res.status(201).json({token});
