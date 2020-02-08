@@ -37,3 +37,20 @@ exports.validateLoginData = (data) =>{
         valid: Object.keys(errors).length === 0 ? true : false
     }
 };
+
+
+exports.reduceUserDetails =(data) =>{
+  let userDetails ={};
+
+  if(!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
+  if(!isEmpty(data.website.trim())){
+      //https://website.com else we will add (http://)
+      if (data.website.trim().substring(0,4) !=='http'){
+          userDetails.website = 'http://'+ data.website.trim();
+      }else userDetails.website = data.website;
+  }
+  if(!isEmpty(data.faculty.trim())) userDetails.faculty = data.faculty;
+  if(!isEmpty(data.yearsInCollege.trim())) userDetails.yearsInCollege = data.yearsInCollege;
+
+  return userDetails;
+};
