@@ -100,6 +100,31 @@ exports.addUserDetails = (req, res) =>{
             return res.status(500).json({error: err.code});
         })
 };
+//Get user details
+exports.getAllAuthenticatedUser = (req,res)=>{
+  db
+      .collection('users')
+      .orderBy('handle')
+      .get()
+      .then((data) =>{
+         let users =[];
+         data.forEach((doc) =>{
+            users.push({
+                userId: doc.id,
+                imageUrl:doc.data().imageUrl,
+                handle: doc.data().handle,
+                bio:doc.data().bio,
+                faculty:doc.data().faculty,
+                yearsInCollege:doc.data().yearsInCollege,
+                website:doc.data().website,
+                createdAt:doc.data().createdAt,
+                position:doc.data().positions
+            });
+         });
+         return res.json(users);
+      })
+      .catch((err) => console.error(err));
+};
 
 //Upload image for profile
 exports.uploadImage = (req,res) =>{
