@@ -28,7 +28,7 @@ exports.postOneScream = (req,res) =>{
     }
    const newScream = {
        body: req.body.body,
-       userHandle: req.user.handle,
+       userHandle: req.user.email,//TODO заменяем на email
        createdAt: admin.firestore.Timestamp.fromDate(new Date())
    };
 
@@ -42,4 +42,4 @@ exports.postOneScream = (req,res) =>{
            res.status(500).json({ error: "something went wrong"});
            console.error(err);
        })
-}
+};

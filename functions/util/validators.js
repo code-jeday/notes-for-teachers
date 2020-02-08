@@ -19,7 +19,7 @@ exports.validateSignUpData = (data) =>{
 
     if(isEmpty(data.password)) errors.password = 'Must not be empty';
     if(data.confirmPassword !== data.password) errors.confirmPassword = 'Passwords must match';
-    if(isEmpty(data.handle)) errors.handle = 'Must not be empty';
+    if(isEmpty(data.email)) errors.email = 'Must not be empty';//TODO handle заменяем на email
 
     return {
         errors,
@@ -51,6 +51,9 @@ exports.reduceUserDetails =(data) =>{
   }
   if(!isEmpty(data.faculty.trim())) userDetails.faculty = data.faculty;
   if(!isEmpty(data.yearsInCollege.trim())) userDetails.yearsInCollege = data.yearsInCollege;
+  if(!isEmpty(data.name.trim())) userDetails.name = data.name;
+  if(!isEmpty(data.surname.trim())) userDetails.surname = data.surname;
+  if(!isEmpty(data.positions.trim())) userDetails.positions = data.positions;
 
   return userDetails;
 };

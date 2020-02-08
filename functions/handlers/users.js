@@ -12,7 +12,7 @@ exports.signup = (req,res) =>{
         email: req.body.email,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
-        handle: req.body.handle,
+        //handle: req.body.handle,//TODO удаляем
     };
     // validation check
     const {valid,errors} = validateSignUpData(newUser);
@@ -22,11 +22,11 @@ exports.signup = (req,res) =>{
     const noImage ='no-image.jpg';
 
     let token, userId;
-    db.doc('/users/'+newUser.handle)
+    db.doc('/users/'+newUser.email)//TODO заменяем на email
         .get()
         .then(doc => {
             if (doc.exists) {
-                return res.status(400).json({handle: 'this handle is already taken'});
+                return res.status(400).json({email: 'this email is already taken'});//TODO заменяем на email
             } else {
                 return firebase
                     .auth()
@@ -40,13 +40,13 @@ exports.signup = (req,res) =>{
         .then((idToken) =>{
             token = idToken;
             const userCredential ={
-                handle: newUser.handle,
+                //handle: newUser.handle,//TODO заменяем на email / удаляем
                 email: newUser.email,
                 createdAt: new Date().toISOString(),
                 imageUrl: 'https://firebasestorage.googleapis.com/v0/b/' + config.storageBucket + '/o/' + noImage + '?alt=media',
                 userId: userId
             };
-            return db.doc('/users/'+newUser.handle).set(userCredential);
+            return db.doc('/users/'+newUser.email).set(userCredential);//TODO заменяем на email
         })
         .then(()=>{
             return res.status(201).json({token});
@@ -90,7 +90,7 @@ exports.login = (req,res) =>{
 exports.addUserDetails = (req, res) =>{
     let userDetails = reduceUserDetails(req.body);
 
-    db.doc('/users/'+req.user.handle)
+    db.doc('/users/'+req.user.email)//TODO заменяем на email
         .update(userDetails)
         .then(() =>{
           return res.json({message: 'Details added successfully'});
@@ -104,7 +104,7 @@ exports.addUserDetails = (req, res) =>{
 exports.getAllAuthenticatedUser = (req,res)=>{
   db
       .collection('users')
-      .orderBy('handle')
+      .orderBy('email')//TODO заменяем на email
       .get()
       .then((data) =>{
          let users =[];
@@ -112,13 +112,15 @@ exports.getAllAuthenticatedUser = (req,res)=>{
             users.push({
                 userId: doc.id,
                 imageUrl:doc.data().imageUrl,
-                handle: doc.data().handle,
+                //handle: doc.data().handle,//TODO удаляем
                 bio:doc.data().bio,
                 faculty:doc.data().faculty,
                 yearsInCollege:doc.data().yearsInCollege,
                 website:doc.data().website,
                 createdAt:doc.data().createdAt,
-                position:doc.data().positions
+                position:doc.data().positions,
+                name:doc.data().name,
+                surname:doc.data().surname
             });
          });
          return res.json(users);
@@ -166,7 +168,7 @@ exports.uploadImage = (req,res) =>{
         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
           config.storageBucket
         }/o/${imageFileName}?alt=media`;
-        return db.doc(`/users/${req.user.handle}`).update({ imageUrl });
+        return db.doc(`/users/${req.user.email}`).update({ imageUrl });//TODO заменяем на email
       })
       .then(() => {
         return res.json({ message: 'image uploaded successfully' });
