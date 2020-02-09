@@ -120,7 +120,7 @@ exports.getAllAuthenticatedUser = (req,res)=>{
                 createdAt:doc.data().createdAt,
                 position:doc.data().positions,
                 name:doc.data().name,
-                surname:doc.data().surname
+                surname:doc.data().surname,
             });
          });
          return res.json(users);

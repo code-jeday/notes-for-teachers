@@ -13,7 +13,8 @@ exports.getAllScreams = (req,res) =>{
                    screamId: doc.id,
                    body: doc.data().body,
                    userHandle: doc.data().userHandle,
-                   createdAt: doc.data().createdAt
+                   createdAt: doc.data().createdAt,
+                   awardedAt: doc.data().awardedAt
                });
            });
            return res.json(screams);
@@ -26,10 +27,14 @@ exports.postOneScream = (req,res) =>{
     if(req.body.body.trim() ===''){
         return res.status(400).json({body:'Body must not be empty'});
     }
+    if(req.body.awardedAt.trim() ===''){
+        return res.status(400).json({awardedAt:'awardedAt must not be empty'});
+    }
    const newScream = {
        body: req.body.body,
-       userHandle: req.user.email,//TODO заменяем на email
-       createdAt: admin.firestore.Timestamp.fromDate(new Date())
+       userHandle: req.user.email,
+       createdAt: admin.firestore.Timestamp.fromDate(new Date()),
+       awardedAt: req.body.awardedAt// мы обращаемся к body а потом уже к данным которые вводим
    };
 
    db

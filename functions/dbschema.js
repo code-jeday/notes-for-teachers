@@ -19,7 +19,8 @@ let db ={
       {
           userHandle:"fortune",
           body:"some scream",
-          createdAt: "user_number_one@gmail.com"
+          createdAt: "user_number_one@gmail.com",
+          awardedAt: "user_number_one@gmail.com"
       }
   ]
 };
