@@ -17,8 +17,9 @@ let db ={
   ],
   screams:[
       {
-          userHandle:"fortune",
+          screamId:"sacaa",
           body:"some scream",
+          userHandle:"fortune",
           createdAt: "user_number_one@gmail.com",
           awardedAt: "user_number_one@gmail.com"
       }

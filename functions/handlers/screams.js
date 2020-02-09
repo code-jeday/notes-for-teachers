@@ -33,15 +33,17 @@ exports.postOneScream = (req,res) =>{
    const newScream = {
        body: req.body.body,
        userHandle: req.user.email,
-       createdAt: admin.firestore.Timestamp.fromDate(new Date()),
-       awardedAt: req.body.awardedAt// мы обращаемся к body а потом уже к данным которые вводим
+       userImage: req.user.imageUrl,
+       createdAt: new Date().toISOString()// мы обращаемся к body а потом уже к данным которые вводим
    };
 
    db
        .collection('screams')
        .add(newScream)
        .then(doc =>{
-           res.json({ message: 'document ' + doc.id +' created successfully'});
+           const resScream = newScream;
+           resScream.screamId = doc.id;
+           res.json(resScream);
        })
        .catch(err=>{
            res.status(500).json({ error: "something went wrong"});
