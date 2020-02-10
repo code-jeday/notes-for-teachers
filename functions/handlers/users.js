@@ -102,6 +102,8 @@ exports.addUserDetails = (req, res) =>{
             return res.status(500).json({error: err.code});
         })
 };
+// Get personal user details
+
 //Get user details
 exports.getAllAuthenticatedUser = (req,res)=>{
   db

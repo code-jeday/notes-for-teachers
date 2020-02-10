@@ -33,7 +33,6 @@ exports.postOneScream = (req,res) =>{
    const newScream = {
        body: req.body.body,
        userHandle: req.user.email,
-       userImage: req.user.imageUrl,
        createdAt: new Date().toISOString()// мы обращаемся к body а потом уже к данным которые вводим
    };
 
