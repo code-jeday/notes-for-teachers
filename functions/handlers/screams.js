@@ -24,16 +24,16 @@ exports.getAllScreams = (req,res) =>{
 
 
 exports.postOneScream = (req,res) =>{
-    if(req.body.body.trim() ===''){
+    if(req.body.body.trim() ===''){// trim удаляет пробелы с обеих концов строки
         return res.status(400).json({body:'Body must not be empty'});
     }
     if(req.body.awardedAt.trim() ===''){
         return res.status(400).json({awardedAt:'awardedAt must not be empty'});
     }
    const newScream = {
-       body: req.body.body,
+       body: req.body.body,// мы обращаемся к body а потом уже к данным которые вводим
        userHandle: req.user.email,
-       createdAt: new Date().toISOString()// мы обращаемся к body а потом уже к данным которые вводим
+       createdAt: new Date().toISOString()
    };
 
    db

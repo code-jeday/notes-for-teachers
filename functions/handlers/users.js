@@ -103,7 +103,20 @@ exports.addUserDetails = (req, res) =>{
         })
 };
 // Get personal user details
-
+exports.getAuthenticatedUser =(req,res) =>{
+  let userData ={};
+  db.doc(`/users/${req.user.email}`).get()
+      .then(doc=>{
+          if(doc.exists){
+              userData = doc.data();
+              return res.json(userData);
+          }
+      })
+      .catch(err =>{
+          console.error(err);
+          return res.status(500).json({error:err.code});
+      })
+};
 //Get user details
 exports.getAllAuthenticatedUser = (req,res)=>{
   db
